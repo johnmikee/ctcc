@@ -11,7 +11,6 @@ import (
 	"github.com/johnmikee/ctcc/tcc"
 	"github.com/johnmikee/ctcc/users"
 	"github.com/johnmikee/ctcc/version"
-	"github.com/pkg/profile"
 )
 
 type Opts struct {
@@ -88,7 +87,6 @@ func mdmProfileOverrides() []*tcc.MDMEntry {
 }
 
 func main() {
-	defer profile.Start(profile.NoShutdownHook, profile.ProfilePath(".")).Stop()
 	o := Opts{
 		ToCSV:   true,
 		ToJSON:  false,
