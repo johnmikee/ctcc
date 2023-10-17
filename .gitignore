@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+
+build/
+*.csv
+
+.DS_Store
