@@ -256,7 +256,6 @@ func (m Access) services() []ServiceDetail {
 			Allowed:      m.KTCCServiceSystemPolicyDownloadsFolder.Allowed,
 		},
 	}
-
 }
 
 func (m Access) codeRequirement() string {

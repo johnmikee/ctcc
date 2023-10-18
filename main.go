@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"sync"
 
-	_ "net/http/pprof"
-
 	"github.com/johnmikee/ctcc/returner"
 	"github.com/johnmikee/ctcc/tcc"
 	"github.com/johnmikee/ctcc/version"

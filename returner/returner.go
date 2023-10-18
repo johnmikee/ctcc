@@ -249,7 +249,6 @@ func Sal(t *TCCReport) (string, error) {
 
 func Json(t *TCCReport) (string, error) {
 	data, err := toJson(t)
-
 	if err != nil {
 		return "", fmt.Errorf("error marshalling report: %s", err)
 	}
