@@ -9,11 +9,10 @@ import (
 
 	"github.com/johnmikee/ctcc/returner"
 	"github.com/johnmikee/ctcc/tcc"
-	"github.com/johnmikee/ctcc/users"
 	"github.com/johnmikee/ctcc/version"
 )
 
-type Opts struct {
+type Cfg struct {
 	FileName string `json:"file_name"`
 	ToCSV    bool   `json:"to_csv"`
 	ToJSON   bool   `json:"to_json"`
@@ -38,7 +37,7 @@ func systemDefaultPermissions() []*tcc.TCCEntry {
 }
 
 func userPermissionOverrides() []*tcc.TCCEntry {
-	localUsers := users.List()
+	localUsers := tcc.ListUsers()
 	entries := []*tcc.TCCEntry{}
 	entryChan := make(chan *tcc.TCCEntry)
 
@@ -46,7 +45,7 @@ func userPermissionOverrides() []*tcc.TCCEntry {
 
 	for _, user := range localUsers {
 		wg.Add(1)
-		go func(u users.Users) {
+		go func(u tcc.Users) {
 			defer wg.Done()
 			resp, err := tcc.UserQuery(u.DB)
 			if err != nil {
@@ -87,7 +86,7 @@ func mdmProfileOverrides() []*tcc.MDMEntry {
 }
 
 func main() {
-	o := Opts{
+	o := Cfg{
 		ToCSV:   true,
 		ToJSON:  false,
 		ToSal:   false,
@@ -97,7 +96,7 @@ func main() {
 	flag.StringVar(&o.FileName, "file", "ctcc.csv", "File name to output to")
 	flag.BoolVar(&o.ToCSV, "csv", false, "Output to CSV")
 	flag.BoolVar(&o.ToJSON, "json", false, "Output to JSON")
-	flag.BoolVar(&o.ToSal, "sal", false, "Output to Sal")
+	flag.BoolVar(&o.ToSal, "sal", false, "Output for sal to pick it up")
 	flag.BoolVar(&o.Version, "version", false, "Print version and exit")
 	flag.Parse()
 

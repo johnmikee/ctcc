@@ -18,6 +18,7 @@ type KTCCServiceAccessibility struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServiceAddressBook struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -26,6 +27,7 @@ type KTCCServiceAddressBook struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServiceCalendar struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -34,6 +36,7 @@ type KTCCServiceCalendar struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServiceFileProviderPresence struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -42,6 +45,7 @@ type KTCCServiceFileProviderPresence struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServicePhotos struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -50,6 +54,7 @@ type KTCCServicePhotos struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServicePostEvent struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -67,6 +72,7 @@ type KTCCServiceSystemPolicyDesktopFolder struct {
 	IdentifierType      string      `plist:"IdentifierType,omitempty"`
 	StaticCode          bool        `plist:"StaticCode,omitempty"`
 }
+
 type KTCCServiceSystemPolicyDocumentsFolder struct {
 	Allowed             bool        `plist:"Allowed,omitempty"`
 	CodeRequirement     string      `plist:"CodeRequirement,omitempty"`
@@ -108,6 +114,7 @@ type ComAppleSystemevents struct {
 	IdentifierType                string      `plist:"IdentifierType, omitempty"`
 	StaticCode                    bool        `plist:"StaticCode, omitempty"`
 }
+
 type KTCCServiceAppleEvents struct {
 	ComAppleSystemevents ComAppleSystemevents `plist:"com.apple.systemevents"`
 }
@@ -126,8 +133,10 @@ type Access struct {
 	KTCCServiceSystemPolicyDownloadsFolder KTCCServiceSystemPolicyDownloadsFolder `plist:"kTCCServiceSystemPolicyDownloadsFolder, omitempty"`
 }
 
+// MDMOverrides is a map of MDM overrides
 type MDMOverrides map[string]Access
 
+// MDMEntry is a struct for the response from the MDMOverrides.plist
 type MDMEntry struct {
 	Source              string
 	MDMServer           string
@@ -139,6 +148,7 @@ type MDMEntry struct {
 	StaticCode          string
 }
 
+// CheckMDMOverrides checks for MDM overrides
 func CheckMDMOverrides() (MDMOverrides, error) {
 	_, err := os.Stat(mdmOverrides)
 	if err != nil {
@@ -186,6 +196,7 @@ func getMDMServer() string {
 	return mdm
 }
 
+// ServiceDetail is a struct for formatting the response from the MDMOverrides.plist
 type ServiceDetail struct {
 	Service      string
 	FriendlyName string
@@ -356,6 +367,7 @@ func (m Access) static(service string) string {
 	return sort(required)
 }
 
+// ProcessMDMOverrides processes the MDMOverrides.plist
 func ProcessMDMOverrides(service string, m Access) *MDMEntry {
 	return &MDMEntry{
 		Source:              "MDM",

@@ -6,6 +6,6 @@
     "name": "ctcc-${version}.pkg",
     "identifier": "com.github.pkg.ctcc",
     "install_location": "/",
-    "version": "1.0",
+    "version": "0.0.1",
     "distribution_style": false
 }

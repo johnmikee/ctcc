@@ -1,4 +1,4 @@
-package users
+package tcc
 
 import (
 	"os"
@@ -11,7 +11,8 @@ type Users struct {
 	DB   string `json:"home"`
 }
 
-func List() []Users {
+// ListUsers returns a list of users on the system
+func ListUsers() []Users {
 	users := listUsers()
 	var userHomes []Users
 

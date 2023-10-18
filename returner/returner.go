@@ -27,13 +27,8 @@ type Facts struct {
 	CheckinModuleVersion string `json:"checkin_module_version"`
 }
 
-type Messages struct {
-	Message string `json:"message"`
-}
-
 type Report struct {
 	Facts        Facts                  `json:"facts"`
-	Messages     Messages               `json:"messages"`
 	ManagedItems map[string]ManagedItem `json:"managed_items"`
 }
 
@@ -129,7 +124,6 @@ func convert(t *TCCReport) map[string]Report {
 		Facts: Facts{
 			CheckinModuleVersion: "1.0",
 		},
-		Messages:     Messages{},
 		ManagedItems: systemReport,
 	}
 
@@ -137,7 +131,6 @@ func convert(t *TCCReport) map[string]Report {
 		Facts: Facts{
 			CheckinModuleVersion: "1.0",
 		},
-		Messages:     Messages{},
 		ManagedItems: userReport,
 	}
 
@@ -145,7 +138,6 @@ func convert(t *TCCReport) map[string]Report {
 		Facts: Facts{
 			CheckinModuleVersion: "1.0",
 		},
-		Messages:     Messages{},
 		ManagedItems: mdmReport,
 	}
 
@@ -233,26 +225,43 @@ func mdmCsv(fileName string, entry []*tcc.MDMEntry) error {
 }
 
 func Sal(t *TCCReport) (string, error) {
-	report, err := Json(t)
-	if err != nil {
-		return "", err
-	}
+	report := convert(t)
 
+	fmt.Println(report)
 	file, err := os.Create("/usr/local/sal/tcc_results.json")
 	if err != nil {
 		return "", fmt.Errorf("error creating file: %s", err)
 	}
 	defer file.Close()
 
-	_, err = file.Write([]byte(report))
-	return report, err
+	data, err := toJson(report)
+	if err != nil {
+		return "", fmt.Errorf("error marshalling report: %s", err)
+	}
+
+	_, err = file.Write(data)
+	if err != nil {
+		return "", fmt.Errorf("error writing to file: %s", err)
+	}
+
+	return string(data), nil
 }
 
 func Json(t *TCCReport) (string, error) {
-	data, err := json.Marshal(t)
+	data, err := toJson(t)
+
 	if err != nil {
 		return "", fmt.Errorf("error marshalling report: %s", err)
 	}
 
 	return string(data), nil
+}
+
+func toJson(report interface{}) ([]byte, error) {
+	data, err := json.Marshal(report)
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling report: %s", err)
+	}
+
+	return data, nil
 }

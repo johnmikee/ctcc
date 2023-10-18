@@ -9,7 +9,6 @@ import (
 )
 
 func decodeCodeSignature(codeHex string) string {
-	// convert the hexadecimal string to binary using xxd.
 	cmdXxd := exec.Command("xxd", "-r", "-p")
 	cmdXxd.Stdin = strings.NewReader(codeHex)
 	outXxd, errXxd := cmdXxd.Output()
@@ -17,7 +16,6 @@ func decodeCodeSignature(codeHex string) string {
 		return formatStringWithQuotes(codeHex)
 	}
 
-	// run the csreq command with the binary data.
 	cmdCsreq := exec.Command("csreq", "-r", "-", "-t")
 	cmdCsreq.Stdin = bytes.NewReader(outXxd)
 

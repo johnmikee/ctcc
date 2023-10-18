@@ -12,6 +12,7 @@ const (
 	mdmOverrides = "/Library/Application Support/com.apple.TCC/MDMOverrides.plist"
 )
 
+// SQR is a struct for the response from the TCC database
 type SQResponse struct {
 	Client      string `json:"client"`
 	ClientType  int    `json:"client_type"`
@@ -23,10 +24,12 @@ type SQResponse struct {
 	AuthVersion string `json:"auth_version"`
 }
 
+// SystemQuery returns a list of information from the system TCC database
 func SystemQuery() ([]SQResponse, error) {
 	return tccDBQuery(systemTCCDB, defaultQuery)
 }
 
+// UserQuery returns a list of information from the user's TCC database
 func UserQuery(userDB string) ([]SQResponse, error) {
 	return tccDBQuery(userDB, defaultQuery)
 }

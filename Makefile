@@ -61,6 +61,11 @@ APP_NAME = ctcc
 ctcc: .pre-build .pre-ctcc
 	go build -o build/$(CURRENT_PLATFORM)/ctcc -trimpath -ldflags  ${BUILD_VERSION} .
 
+package: ctcc
+	mkdir -p package/payload/usr/local/bin/
+	mv build/$(CURRENT_PLATFORM)/ctcc package/payload/usr/local/bin/
+	cd package && munkipkg .
+
 install: .pre-ctcc
 	go install -trimpath -ldflags ${BUILD_VERSION} .
 
